@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.get('/', router);
 app.post('/new-user', router);
 app.put('/update/:id', router)
-
+app.delete('/delete/:id', router);
 
 app.listen(PORT, ()=>{
     console.log(`app listennig on port ${PORT}`);

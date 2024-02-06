@@ -37,25 +37,15 @@ router.post('/new-user', async(req, res) =>{
     }
 })
 
-router.put('/update/:id',async(req, res) =>{
+router.delete('/delete/:id', (req, res) =>{
     const id = req.params.id;
-    const {name, email,password} = req.body;
-    try{
-        const hashedPassword = await bcrypt.hash(password, salts);
-        const User = new userModule(name, email, hashedPassword);
-        const values = [User.name, User.email, User.password, id]
-
-        connection.query("UPDATE usersInformation SET name = ?, email =?, password =? WHERE userID=?"
-        ,values,(error, results)=>{
-            if(error){
-                res.status(500).send("Error trying to update");
-            }else{
-                res.status(200).send(User);
-            }
-        })
-    }catch(error){
-        res.status(500).send("Error in database");
-    }
+    connection.query("DELETE FROM usersInformation WHERE userID = ?", id,(error, results) =>{
+        if(error){
+            res.status(404).send("User not Found :" + error.message);
+        }else{
+            res.status(200).send("Deleted sucessfull");
+        }
+    })
 })
 
 module.exports = router;
